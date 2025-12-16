@@ -1,6 +1,5 @@
 FROM node:18
 
-# Install LibreOffice
 RUN apt-get update \
  && apt-get install -y libreoffice \
  && apt-get clean
@@ -12,7 +11,7 @@ RUN npm install
 
 COPY . .
 
-RUN npx tsc
+RUN node node_modules/typescript/bin/tsc
 
 RUN mkdir -p uploads
 
