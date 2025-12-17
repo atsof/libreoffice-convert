@@ -1,6 +1,8 @@
 services:
   word2pdf:
     build: .
+    environment:
+      API_KEY: ${API_KEY}
     ports:
       - "8090:8090"
     volumes:

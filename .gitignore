@@ -1,0 +1,11 @@
+# Environment variables
+.env
+.env.*
+
+# Build
+node_modules
+build
+
+# Runtime files
+uploads/*
+!uploads/.gitkeep
