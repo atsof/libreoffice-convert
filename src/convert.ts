@@ -1,22 +1,26 @@
-import { exec } from "child_process";
 import path from "path";
+import { spawn } from "child_process";
 
 export const convertToPDF = (inputPath: string, outputDir: string): Promise<string> => {
     return new Promise((resolve, reject) => {
-        const cmd = `libreoffice --headless --convert-to pdf --outdir "${outputDir}" "${inputPath}"`;
+        const proc = spawn("libreoffice", [
+            "--headless",
+            "--nologo",
+            "--nofirststartwizard",
+            "--convert-to", "pdf",
+            "--outdir", outputDir,
+            inputPath
+        ]);
 
-        exec(cmd, (error, stdout, stderr) => {
-            console.log("STDOUT:", stdout);
-            console.log("STDERR:", stderr);
+        proc.on("error", reject);
 
-            if (error) {
-                return reject(error);
+        proc.on("close", (code) => {
+            if (code !== 0) {
+                return reject(new Error(`LibreOffice exit code ${code}`));
             }
 
             const base = path.basename(inputPath);
-            const pdfName = base + ".pdf";
-            const pdfPath = path.join(outputDir, pdfName);
-
+            const pdfPath = path.join(outputDir, base + ".pdf");
             resolve(pdfPath);
         });
     });
