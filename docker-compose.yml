@@ -8,5 +8,3 @@ services:
     volumes:
       - ./uploads:/usr/src/app/uploads
     restart: always
-    mem_limit: 1g
-    cpus: 1.0
